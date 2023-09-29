@@ -1,0 +1,12 @@
+{
+  "name": "inventoryblazor",
+  "version": "1.0.0",
+  "description": "Creating an Inventory and Warehouse Management System is a substantial project that can help you develop a wide range of software development skills. Here are the main features and functionalities you can include in such a system:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
