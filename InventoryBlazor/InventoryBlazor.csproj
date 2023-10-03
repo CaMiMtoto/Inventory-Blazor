@@ -9,6 +9,7 @@
 
 
     <ItemGroup>
+      <Folder Include="Pages\Items\" />
       <Folder Include="wwwroot\js\" />
     </ItemGroup>
 

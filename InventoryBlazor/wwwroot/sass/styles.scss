@@ -2,6 +2,7 @@
 @import "variables";
 // Import all of Bootstrap's CSS
 @import "../../node_modules/bootstrap/scss/bootstrap";
-*{
+
+body, html {
   font-family: 'Inter', monospace !important;
 }

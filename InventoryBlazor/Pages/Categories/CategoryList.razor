@@ -1,0 +1,82 @@
+@page "/categories"
+@using InventoryBlazor.Models
+@using InventoryBlazor.Services
+@inject ICategoryService CategoryService
+@inject NavigationManager NavigationManager
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Categories
+        </li>
+    </ol>
+</nav>
+
+<div class="card card-body">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">
+            Manage Categories
+        </h4>
+        <a href="categories/new" class="btn btn-outline-primary">
+            New Category
+        </a>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-hover ">
+            <thead>
+            <tr>
+                <th class="text-uppercase text-secondary">Name</th>
+                <th class="text-uppercase text-secondary">Description</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var category in _categories!)
+            {
+                @*
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span @onclick="(() => ShowCategory(category.Id))" style="cursor: pointer;">@category.Name</span>
+                    <button class="btn btn-danger btn-sm" @onclick="(() => ShowDeleteConfirmation(category.Id))">Delete</button>
+                </li>
+                *@
+
+                <tr>
+                    <td>@category?.Name</td>
+                    <td>@category?.Description</td>
+                    <td>
+                        <a href="categories/new?id=@category?.Id" class="btn btn-primary btn-sm">Edit</a>
+                        <button class="btn btn-danger btn-sm" @onclick="(() => ShowDeleteConfirmation(category!.Id))">Delete</button>
+                    </td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@code {
+
+    private List<ItemCategory?>? _categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await CategoryService.GetCategoriesAsync();
+    }
+
+    private void ShowCategory(int categoryId)
+    {
+        NavigationManager.NavigateTo($"/category/edit/{categoryId}");
+    }
+
+    private void ShowDeleteConfirmation(int categoryId)
+    {
+        NavigationManager.NavigateTo($"/category/delete/{categoryId}");
+    }
+}

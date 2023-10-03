@@ -1,0 +1,79 @@
+@page "/categories/new"
+@using InventoryBlazor.Models
+@using InventoryBlazor.Services
+@inject ICategoryService CategoryService
+@inject NavigationManager NavigationManager
+
+<EditForm Model="_newCategory" OnValidSubmit="AddCategory">
+    <DataAnnotationsValidator/>
+    @* <ValidationSummary/> *@
+    <div class="card card-body">
+        <h4 class="mb-4">
+            New Category
+        </h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="categoryName">Category Name:</label>
+                    <input type="text" class="form-control" id="categoryName"
+                           @bind="                _newCategory.Name"/>
+                    @* show error message in span element *@
+                    <ValidationMessage class="small text-danger mt-1" For="@(() => _newCategory.Name)"/>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="categoryDescription">Category Description:</label>
+                    <textarea type="text" class="form-control" id="categoryDescription"
+                           @bind="                _newCategory.Description"></textarea>
+                    @* show error message in span element *@
+                    <ValidationMessage class="small text-danger mt-1" For="@(() => _newCategory.Description)"/>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Category
+                </button>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+
+    private ItemCategory? _newCategory = new ItemCategory
+    {
+        Name = "",
+        Description = ""
+    };
+
+    private string? CategoryId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var queryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+    // Retrieve query string parameters
+        CategoryId = queryString["id"];
+
+        if (CategoryId != null)
+            _newCategory = await CategoryService.GetCategoryByIdAsync(int.Parse(CategoryId));
+    }
+
+    private async Task AddCategory()
+    {
+
+        if (CategoryId != null)
+        {
+            await CategoryService.UpdateCategoryAsync(_newCategory);
+        }
+        else
+        {
+            await CategoryService.CreateCategoryAsync(_newCategory);
+        }
+
+        NavigationManager.NavigateTo("/categories");
+    }
+}

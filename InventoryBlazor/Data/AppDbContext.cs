@@ -10,7 +10,7 @@ public class AppDbContext : DbContext
 
 
     // DbSet for your Category model
-    public DbSet<ItemCategory> ItemCategories { get; set; }
+    public DbSet<ItemCategory?> ItemCategories { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<Salutation> Salutations { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }

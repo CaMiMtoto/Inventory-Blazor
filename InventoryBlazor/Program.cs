@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using InventoryBlazor.Data;
+using InventoryBlazor.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection"));
 });
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 

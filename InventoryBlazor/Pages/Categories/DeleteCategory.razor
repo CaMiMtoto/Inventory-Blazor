@@ -1,0 +1,54 @@
+@page "/category/delete/{CategoryId}"
+@using InventoryBlazor.Models
+@using InventoryBlazor.Services
+@inject ICategoryService CategoryService
+@inject NavigationManager NavigationManager
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="/categories">Categories</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Delete
+        </li>
+    </ol>
+</nav>
+
+@if (_category != null)
+{
+    <div class="alert alert-danger">
+        <h6 class="mb-3">Are you sure you want to delete the category: @_category.Name?</h6>
+        <div>
+            <button class="btn btn-danger" @onclick="RemoveCategory">Yes, Delete</button>
+            <a class="btn btn-secondary" href="/categories">Cancel</a>
+        </div>
+    </div>
+}
+else
+{
+    <p>Category not found!</p>
+}
+
+@code {
+
+    private ItemCategory? _category;
+
+    [Parameter]
+    public required string CategoryId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _category = await CategoryService.GetCategoryByIdAsync(int.Parse(CategoryId));
+    }
+
+    private async Task RemoveCategory()
+    {
+        await CategoryService.DeleteCategoryAsync(int.Parse(CategoryId));
+    // Optionally, navigate the user to another page after deletion.
+        NavigationManager.NavigateTo("/categories");
+    }
+}

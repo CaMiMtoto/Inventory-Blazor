@@ -1,0 +1,37 @@
+@page "/category/edit/{CategoryId}"
+@using InventoryBlazor.Models
+@using InventoryBlazor.Services
+@inject ICategoryService CategoryService
+@if (_category != null)
+{
+    <EditForm Model="_category" OnValidSubmit="UpdateCategory">
+        <div class="form-group">
+            <label for="categoryName">Category Name:</label>
+            <input type="text" class="form-control" id="categoryName" @bind="                _category.Name" required/>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </EditForm>
+}
+else
+{
+    <p>Category not found!</p>
+}
+
+@code {
+
+    private ItemCategory? _category;
+
+    [Parameter]
+    public required string CategoryId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _category = await CategoryService.GetCategoryByIdAsync(int.Parse(CategoryId));
+    }
+
+    private async Task UpdateCategory()
+    {
+        await CategoryService.UpdateCategoryAsync(_category);
+    }
+}
+
